@@ -83,14 +83,15 @@ a, button, summary { cursor: pointer; -webkit-tap-highlight-color: transparent; 
 .home-list-header > span { padding-bottom: 4px; color: var(--muted); font-weight: 900; }
 .home-content #search { max-width: 880px; margin: 0 auto 28px; }
 
-.search { padding: 18px; border: 3px solid var(--border); border-radius: var(--radius-card); background: #fff9d9; box-shadow: var(--shadow-card); }
-.search > label { display: block; margin-bottom: 8px; font-weight: 900; }
+.search { position: relative; padding: 10px; border: 3px solid var(--border); border-radius: var(--radius-control); background: var(--surface); }
+.search > label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .search-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
 .search input { min-width: 0; min-height: 48px; padding: 0 14px; border: 3px solid var(--border); border-radius: 13px; background: var(--surface); color: var(--text); font-size: 1rem; }
 .search button { min-width: 72px; min-height: 48px; border: 3px solid var(--border); border-radius: 13px; background: var(--coral); color: var(--text); font-weight: 900; box-shadow: 3px 3px 0 var(--border); }
 .search button:active { transform: translate(3px, 3px); box-shadow: none; }
 .search-status { min-height: 1.2em; margin: 10px 0 0; color: var(--muted); font-weight: 700; }
 .search-results { display: grid; }
+.search-status:empty, .search-results:empty { display: none; }
 .search-results a { min-height: 46px; display: flex; align-items: center; border-top: 2px solid var(--border); text-decoration: none; font-weight: 800; }
 
 .post-list { max-width: 880px; margin: 24px auto 0; display: grid; gap: 22px; }
@@ -187,8 +188,6 @@ a, button, summary { cursor: pointer; -webkit-tap-highlight-color: transparent; 
   .button { padding-inline: 16px; }
   .home-articles { padding-block: 48px 76px; }
   .home-list-header { align-items: center; }
-  .search-control { grid-template-columns: 1fr; }
-  .search button { width: 100%; }
   .post-card.has-cover:not(.cover-failed) .post-card-link { min-height: 0; grid-template-columns: 1fr; }
   .post-card img { height: auto; aspect-ratio: 16 / 9; border-right: 0; border-bottom: 3px solid var(--border); }
   .post-card-copy { padding: 18px; }

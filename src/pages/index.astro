@@ -18,7 +18,7 @@ const page = paginatePosts(allPosts, 1, SITE.postsPerPage);
         </div>
         <span>{allPosts.length} 篇</span>
       </header>
-      {allPosts.length >= 5 && <div id="search"><SearchBox /></div>}
+      <div id="search"><SearchBox /></div>
       <PostList posts={page.items} />
       {page.totalPages > 1 && <nav class="pagination"><a class="button button-secondary" href={withBase('/page/2/')}>下一页</a></nav>}
     </div>

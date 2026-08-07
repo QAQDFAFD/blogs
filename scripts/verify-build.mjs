@@ -27,8 +27,11 @@ for (const text of ['JiaJun Li', '文章', 'webpack 的 loader 和 plugin 原理
 for (const fragment of ['class="home-list-header"', '<h1>文章</h1>']) {
   if (!home.includes(fragment)) throw new Error(`Homepage structure missing: ${fragment}`);
 }
-for (const fragment of ['home-hero', 'featured-card', 'section-intro', 'data-search']) {
+for (const fragment of ['home-hero', 'featured-card', 'section-intro']) {
   if (home.includes(fragment)) throw new Error(`Homepage still contains removed content: ${fragment}`);
+}
+for (const fragment of ['data-search', '/blogs/search-index.json']) {
+  if (!home.includes(fragment)) throw new Error(`Homepage search missing: ${fragment}`);
 }
 
 for (const text of ['本文目录', '评论', 'BlogPosting', 'https://qaqdfafd.github.io/blogs/posts/webpack-loader-plugin/']) {
