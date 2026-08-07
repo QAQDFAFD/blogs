@@ -20,7 +20,6 @@ const date = post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', mo
         {post.data.tags.slice(0, 3).map((tag) => <span>#{tag}</span>)}
         <time datetime={post.data.pubDate.toISOString()}>{date}</time>
       </div>
-      <span class="card-read">阅读全文</span>
     </div>
   </a>
 </article>

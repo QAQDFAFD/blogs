@@ -21,8 +21,14 @@ const home = readFileSync(resolve(root, 'dist/index.html'), 'utf8');
 const article = readFileSync(resolve(root, 'dist/posts/webpack-loader-plugin/index.html'), 'utf8');
 const homeText = home.replace(/<[^>]+>/g, '');
 
-for (const text of ['JiaJun Li', '写代码，也写下', 'webpack 的 loader 和 plugin 原理解析']) {
+for (const text of ['JiaJun Li', '文章', 'webpack 的 loader 和 plugin 原理解析']) {
   if (!homeText.includes(text)) throw new Error(`Homepage missing: ${text}`);
+}
+for (const fragment of ['class="home-list-header"', '<h1>文章</h1>']) {
+  if (!home.includes(fragment)) throw new Error(`Homepage structure missing: ${fragment}`);
+}
+for (const fragment of ['home-hero', 'featured-card', 'section-intro', 'data-search']) {
+  if (home.includes(fragment)) throw new Error(`Homepage still contains removed content: ${fragment}`);
 }
 
 for (const text of ['本文目录', '评论', 'BlogPosting', 'https://qaqdfafd.github.io/blogs/posts/webpack-loader-plugin/']) {
