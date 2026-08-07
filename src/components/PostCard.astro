@@ -1,0 +1,26 @@
+---
+import type { Post } from '../lib/content';
+import { getReadingMinutes } from '../lib/content';
+import { withBase } from '../lib/urls';
+interface Props { post: Post; }
+const { post } = Astro.props;
+const minutes = getReadingMinutes(post.body ?? '');
+const href = withBase(`/posts/${post.id}/`);
+const cover = post.data.cover ? withBase(post.data.cover) : undefined;
+const date = post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+---
+<article class:list={['post-card', { 'has-cover': cover }]}>
+  <a class="post-card-link" href={href} aria-label={`阅读：${post.data.title}`}>
+    {cover && <img src={cover} alt={post.data.coverAlt} width="1600" height="1000" loading="lazy" onerror="this.closest('.post-card')?.classList.add('cover-failed');this.remove();" />}
+    <div class="post-card-copy">
+      <div class="post-path"><span>{post.data.category}</span><span>{minutes} 分钟</span></div>
+      <h2>{post.data.title}</h2>
+      <p>{post.data.description}</p>
+      <div class="post-meta">
+        {post.data.tags.slice(0, 3).map((tag) => <span>#{tag}</span>)}
+        <time datetime={post.data.pubDate.toISOString()}>{date}</time>
+      </div>
+      <span class="card-read">阅读全文</span>
+    </div>
+  </a>
+</article>

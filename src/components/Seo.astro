@@ -1,0 +1,41 @@
+---
+import { SITE } from '../config/site';
+import { canonicalUrl, withBase } from '../lib/urls';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: { pubDate: Date; updatedDate?: Date; tags: string[] };
+}
+
+const { title, description = SITE.description, image, article } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE.title}` : `${SITE.title} | 个人技术博客`;
+const canonical = canonicalUrl(Astro.url.pathname).href;
+const imageUrl = image
+  ? (/^https?:\/\//.test(image) ? image : canonicalUrl(image.startsWith('/') ? image : `/${image}`).href)
+  : canonicalUrl('/images/editorial-workspace.webp').href;
+const jsonLd = article ? {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  image: imageUrl,
+  datePublished: article.pubDate.toISOString(),
+  dateModified: (article.updatedDate ?? article.pubDate).toISOString(),
+  author: { '@type': 'Person', name: SITE.author },
+  mainEntityOfPage: canonical,
+} : null;
+---
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+{article && article.tags.map((tag) => <meta property="article:tag" content={tag} />)}
+{jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+<link rel="alternate" type="application/rss+xml" title={`${SITE.title} RSS`} href={withBase('/rss.xml')} />

@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import SearchBox from '../components/SearchBox.astro';
+import { getPublishedPosts, getReadingMinutes, paginatePosts } from '../lib/content';
+import { SITE } from '../config/site';
+import { withBase } from '../lib/urls';
+const allPosts = await getPublishedPosts();
+const page = paginatePosts(allPosts, 1, SITE.postsPerPage);
+const featured = allPosts[0];
+const featuredCover = featured?.data.cover ? withBase(featured.data.cover) : undefined;
+---
+<BaseLayout>
+  <section class="home-hero content-shell">
+    <div class="hero-copy">
+      <span class="hero-badge">Personal Developer Blog</span>
+      <h1>写代码，<br />也写下<br /><span>为什么。</span></h1>
+      <p>记录前端工程、构建工具与软件设计中真正值得理解的部分。</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#articles">阅读文章</a>
+        <a class="button button-secondary" href={withBase('/about/')}>关于我</a>
+      </div>
+      <div class="hero-topics" aria-label="博客主题">
+        <span>前端工程</span><span>构建工具</span><span>软件设计</span>
+      </div>
+    </div>
+    {featured && (
+      <article class="featured-card">
+        <div class="feature-tab feature-tab-coral">NEW</div>
+        <div class="feature-tab feature-tab-blue">BLOG</div>
+        {featuredCover && <img src={featuredCover} alt={featured.data.coverAlt} width="1600" height="1000" />}
+        <div class="featured-copy">
+          <div class="featured-meta"><span>最新文章</span><span>{getReadingMinutes(featured.body ?? '')} 分钟</span></div>
+          <h2>{featured.data.title}</h2>
+          <p>{featured.data.description}</p>
+          <a class="button button-primary featured-button" href={withBase(`/posts/${featured.id}/`)}>开始阅读</a>
+        </div>
+      </article>
+    )}
+  </section>
+  <section class="articles-section" id="articles">
+    <div class="content-shell home-content">
+      <header class="section-intro">
+        <span>Latest Writing</span>
+        <h2>最近写了什么</h2>
+        <p>从具体问题出发，拆开技术背后的机制与判断。</p>
+      </header>
+      <div id="search"><SearchBox /></div>
+      <div class="section-heading"><span>全部文章</span><span>{allPosts.length} 篇</span></div>
+      <PostList posts={page.items} />
+      {page.totalPages > 1 && <nav class="pagination"><a class="button button-secondary" href={withBase('/page/2/')}>下一页</a></nav>}
+    </div>
+  </section>
+</BaseLayout>

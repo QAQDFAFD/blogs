@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPublishedPosts, paginatePosts } from '../../lib/content';
+import { SITE } from '../../config/site';
+import { withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  const total = Math.ceil(posts.length / SITE.postsPerPage);
+  return Array.from({ length: Math.max(0, total - 1) }, (_, index) => ({ params: { page: String(index + 2) } }));
+}
+const number = Number(Astro.params.page);
+const allPosts = await getPublishedPosts();
+const page = paginatePosts(allPosts, number, SITE.postsPerPage);
+---
+<BaseLayout title={`文章第 ${number} 页`}>
+  <div class="content-shell listing-page">
+    <h1>文章 / {number}</h1>
+    <PostList posts={page.items} />
+    <nav class="pagination" aria-label="分页">
+      <a href={number === 2 ? withBase('/') : withBase(`/page/${number - 1}/`)}>上一页</a>
+      {number < page.totalPages && <a href={withBase(`/page/${number + 1}/`)}>下一页</a>}
+    </nav>
+  </div>
+</BaseLayout>

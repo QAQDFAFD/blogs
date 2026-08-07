@@ -1,0 +1,32 @@
+---
+interface Heading { depth: number; slug: string; text: string; }
+interface Props { headings: Heading[]; mode?: 'mobile' | 'desktop' | 'both'; }
+const headings = (Astro.props.headings as Heading[]).filter((heading) => heading.depth === 2 || heading.depth === 3);
+const mode = Astro.props.mode ?? 'both';
+---
+{headings.length > 0 && (
+  <>
+    {(mode === 'mobile' || mode === 'both') && <details class="toc toc-mobile">
+      <summary>本文目录</summary>
+      <ol>{headings.map((heading) => <li class:list={{ nested: heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol>
+    </details>}
+    {(mode === 'desktop' || mode === 'both') && <aside class="toc toc-desktop" aria-label="本文目录">
+      <strong>本文目录</strong>
+      <ol>{headings.map((heading) => <li class:list={{ nested: heading.depth === 3 }}><a data-toc-link href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol>
+    </aside>}
+  </>
+)}
+{(mode === 'desktop' || mode === 'both') && <script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+  const byId = new Map(links.map((link) => [decodeURIComponent(link.hash.slice(1)), link]));
+  const headings = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+  if (headings.length) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (!visible) return;
+      links.forEach((link) => link.removeAttribute('aria-current'));
+      byId.get(visible.target.id)?.setAttribute('aria-current', 'location');
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    headings.forEach((heading) => observer.observe(heading));
+  }
+</script>}

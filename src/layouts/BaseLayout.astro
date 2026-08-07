@@ -1,0 +1,39 @@
+---
+import Header from '../components/Header.astro';
+import Seo from '../components/Seo.astro';
+import { SITE } from '../config/site';
+import { withBase } from '../lib/urls';
+import '@fontsource-variable/fredoka';
+import '@fontsource-variable/nunito';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: { pubDate: Date; updatedDate?: Date; tags: string[] };
+}
+const props = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#fbf7f3" />
+    <link rel="icon" href={withBase('/favicon.svg')} />
+    <Seo {...props} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <Header />
+    <main id="main-content"><slot /></main>
+    <footer class="site-footer">
+      <div class="content-shell footer-inner">
+        <span>© {new Date().getFullYear()} {SITE.author}</span>
+        <span><a href={withBase('/rss.xml')}>RSS</a> / <a href={SITE.github}>GitHub</a></span>
+      </div>
+    </footer>
+  </body>
+</html>

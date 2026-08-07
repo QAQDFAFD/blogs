@@ -1,0 +1,60 @@
+---
+import { withBase } from '../lib/urls';
+const indexUrl = withBase('/search-index.json');
+---
+<section class="search" data-search data-index={indexUrl}>
+  <label for="post-search">搜索文章</label>
+  <div class="search-control">
+    <input id="post-search" type="search" autocomplete="off" placeholder="标题、分类或标签" />
+    <button type="button" data-clear>清空</button>
+  </div>
+  <p class="search-status" data-status aria-live="polite"></p>
+  <div class="search-results" data-results></div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-search]').forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>('input');
+    const clear = root.querySelector<HTMLButtonElement>('[data-clear]');
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    const results = root.querySelector<HTMLElement>('[data-results]');
+    if (!input || !clear || !status || !results) return;
+    type SearchItem = {title:string;description:string;category:string;tags:string[];url:string};
+    let indexPromise: Promise<SearchItem[]> | null = null;
+    let requestId = 0;
+    const load = async () => {
+      if (!indexPromise) {
+        indexPromise = fetch(root.dataset.index || '').then(async (response) => {
+          if (!response.ok) throw new Error('search index');
+          return response.json() as Promise<SearchItem[]>;
+        }).catch((error) => {
+          indexPromise = null;
+          throw error;
+        });
+      }
+      return indexPromise;
+    };
+    input.addEventListener('input', async () => {
+      const currentRequest = ++requestId;
+      const query = input.value.trim().toLocaleLowerCase();
+      results.replaceChildren();
+      if (!query) { status.textContent = ''; return; }
+      status.textContent = '正在搜索';
+      try {
+        const data = await load();
+        if (currentRequest !== requestId || input.value.trim().toLocaleLowerCase() !== query) return;
+        const matched = data.filter((item) => [item.title, item.description, item.category, ...item.tags].join(' ').toLocaleLowerCase().includes(query));
+        results.replaceChildren();
+        status.textContent = matched.length ? `找到 ${matched.length} 篇文章` : `没有找到“${input.value.trim()}”`;
+        matched.forEach((item) => {
+          const link = document.createElement('a');
+          link.href = item.url;
+          link.textContent = `${item.title} / ${item.category}`;
+          results.append(link);
+        });
+      } catch {
+        if (currentRequest === requestId) status.textContent = '搜索暂时无法使用，请稍后重试。';
+      }
+    });
+    clear.addEventListener('click', () => { input.value = ''; input.dispatchEvent(new Event('input')); input.focus(); });
+  });
+</script>

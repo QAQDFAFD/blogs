@@ -1,0 +1,67 @@
+---
+import { GISCUS } from '../config/site';
+const configured = Boolean(GISCUS.repoId && GISCUS.categoryId);
+---
+<section class="comments" aria-labelledby="comments-heading">
+  <h2 id="comments-heading">评论</h2>
+  <p>使用 GitHub 账号参与讨论。</p>
+  {configured ? (
+    <div class="giscus-host" data-giscus-host data-repo={GISCUS.repo} data-repo-id={GISCUS.repoId} data-category={GISCUS.category} data-category-id={GISCUS.categoryId}>
+      <div class="comment-skeleton" data-comment-state role="status" aria-live="polite">正在加载评论</div>
+    </div>
+  ) : (
+    <div class="comment-notice">评论尚未配置。<a href="https://github.com/QAQDFAFD/blogs#giscus-setup">查看配置说明</a></div>
+  )}
+</section>
+{configured && <script is:inline>
+  (() => {
+    const host = document.querySelector('[data-giscus-host]');
+    if (!host) return;
+    const state = host.querySelector('[data-comment-state]');
+    const load = () => {
+      host.querySelector('script')?.remove();
+      state.textContent = '正在加载评论';
+      state.className = 'comment-skeleton';
+      state.setAttribute('role', 'status');
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      const attrs = {
+        repo: host.dataset.repo,
+        'repo-id': host.dataset.repoId,
+        category: host.dataset.category,
+        'category-id': host.dataset.categoryId,
+        mapping: 'pathname',
+        strict: '0',
+        'reactions-enabled': '1',
+        'emit-metadata': '0',
+        'input-position': 'top',
+        theme: document.documentElement.dataset.theme === 'dark' ? 'dark_dimmed' : 'light',
+        lang: 'zh-CN',
+        loading: 'lazy',
+      };
+      Object.entries(attrs).forEach(([name, value]) => value && script.setAttribute(`data-${name}`, value));
+      script.onerror = () => {
+        state.className = 'comment-notice';
+        state.setAttribute('role', 'alert');
+        state.replaceChildren('评论暂时无法加载。');
+        const retry = document.createElement('button');
+        retry.type = 'button';
+        retry.textContent = '重试';
+        retry.addEventListener('click', load, { once: true });
+        state.append(retry);
+      };
+      const observer = new MutationObserver(() => {
+        if (host.querySelector('iframe.giscus-frame')) { state.remove(); observer.disconnect(); }
+      });
+      observer.observe(host, { childList: true, subtree: true });
+      host.append(script);
+    };
+    load();
+    addEventListener('theme-change', (event) => {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme: event.detail === 'dark' ? 'dark_dimmed' : 'light' } } }, 'https://giscus.app');
+    });
+  })();
+</script>}
