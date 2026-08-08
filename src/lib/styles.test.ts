@@ -38,6 +38,11 @@ describe('compact article typography', () => {
     }
   });
 
+  it('keeps short tables content-sized while constraining wide tables', () => {
+    expect(css).toMatch(/\.prose table\s*\{[^}]*width:\s*max-content[^}]*max-width:\s*100%[^}]*overflow-x:\s*auto/s);
+    expect(css).not.toContain('.prose table { display: block; width: 100%;');
+  });
+
   it('compacts the desktop table of contents but preserves mobile targets', () => {
     expect(css).toMatch(/\.toc-desktop\s*\{[^}]*padding:\s*16px/s);
     expect(css).toMatch(/\.toc ol\s*\{[^}]*margin:\s*8px 0 0/s);

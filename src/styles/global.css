@@ -151,7 +151,7 @@ a, button, summary { cursor: pointer; -webkit-tap-highlight-color: transparent; 
 .prose a { color: var(--green-dark); font-weight: 800; }
 .prose img { width: 100%; height: auto; margin: 1.4rem 0; border: 3px solid var(--border); border-radius: var(--radius-card); box-shadow: 5px 5px 0 var(--border); cursor: zoom-in; }
 .prose pre { overflow-x: auto; margin: 1.4rem 0; padding: 19px; border: 3px solid var(--border); border-radius: var(--radius-control); background: var(--text) !important; color: #f6f7f4; font-size: .86rem; line-height: 1.65; tab-size: 2; }
-.prose table { display: block; width: 100%; max-width: 100%; overflow-x: auto; margin: 1.4rem 0; border-spacing: 0; border: 3px solid var(--border); border-radius: var(--radius-control); }
+.prose table { display: block; width: max-content; max-width: 100%; overflow-x: auto; margin: 1.4rem 0; border-spacing: 0; border: 3px solid var(--border); border-radius: var(--radius-control); }
 .prose th, .prose td { min-width: 120px; padding: 10px 12px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: left; }
 .prose th { background: var(--blue); }
 .prose :not(pre) > code { padding: .18em .38em; border-radius: 6px; background: #e9e5fa; color: #423c78; font-size: .9em; }
