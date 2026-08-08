@@ -23,6 +23,26 @@ const props = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#fbf7f3" />
+    <script is:inline>
+      (() => {
+        const storageKey = 'jiajun-blog-theme';
+        const root = document.documentElement;
+        let theme;
+
+        try {
+          const storedTheme = localStorage.getItem(storageKey);
+          theme = storedTheme === 'light' || storedTheme === 'dark'
+            ? storedTheme
+            : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        } catch {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#171c26' : '#fbf7f3');
+      })();
+    </script>
     <link rel="icon" href={withBase('/favicon.svg')} />
     <Seo {...props} />
   </head>

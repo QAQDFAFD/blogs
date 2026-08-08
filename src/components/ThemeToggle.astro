@@ -1,0 +1,45 @@
+---
+import moonIcon from '@tabler/icons/outline/moon.svg?raw';
+import sunIcon from '@tabler/icons/outline/sun.svg?raw';
+---
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到黑夜模式" aria-pressed="false">
+  <span class="theme-icon theme-icon-moon" aria-hidden="true" set:html={moonIcon} />
+  <span class="theme-icon theme-icon-sun" aria-hidden="true" set:html={sunIcon} />
+</button>
+
+<script>
+  const storageKey = 'jiajun-blog-theme';
+  const root = document.documentElement;
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+
+  const applyTheme = (theme: 'light' | 'dark', persist = false) => {
+    const isDark = theme === 'dark';
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    themeColor?.setAttribute('content', isDark ? '#171c26' : '#fbf7f3');
+    dispatchEvent(new CustomEvent('theme-change', { detail: theme }));
+
+    if (button) {
+      const nextMode = isDark ? '白天' : '黑夜';
+      button.setAttribute('aria-label', `切换到${nextMode}模式`);
+      button.setAttribute('aria-pressed', String(isDark));
+      button.title = `切换到${nextMode}模式`;
+    }
+
+    if (persist) {
+      try {
+        localStorage.setItem(storageKey, theme);
+      } catch {
+        // Storage can be unavailable in privacy-restricted browsing contexts.
+      }
+    }
+  };
+
+  if (button) {
+    applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+    button.addEventListener('click', () => {
+      applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
+    });
+  }
+</script>
