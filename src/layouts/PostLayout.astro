@@ -5,6 +5,7 @@ import { getReadingMinutes } from '../lib/content';
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import GiscusComments from '../components/GiscusComments.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 import { withBase } from '../lib/urls';
 import { SITE } from '../config/site';
 interface Props { post: Post; headings: MarkdownHeading[]; newer?: Post; older?: Post; }
@@ -35,5 +36,6 @@ const date = post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', mo
       </div>
       <TableOfContents headings={headings} mode="desktop" />
     </div>
+    <ImageLightbox />
   </article>
 </BaseLayout>

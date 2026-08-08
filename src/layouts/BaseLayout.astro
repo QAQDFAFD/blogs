@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import BackToTop from '../components/BackToTop.astro';
 import Seo from '../components/Seo.astro';
 import { SITE } from '../config/site';
 import { withBase } from '../lib/urls';
@@ -35,5 +36,6 @@ const props = Astro.props;
         <span><a href={withBase('/rss.xml')}>RSS</a> / <a href={SITE.github}>GitHub</a></span>
       </div>
     </footer>
+    <BackToTop />
   </body>
 </html>

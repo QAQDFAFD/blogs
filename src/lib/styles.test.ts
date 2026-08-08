@@ -20,7 +20,8 @@ describe('post card cover sizing', () => {
 
 describe('compact article typography', () => {
   it('uses the balanced reading rhythm', () => {
-    expect(css).toMatch(/\.reading-card\s*\{[^}]*padding:\s*clamp\(22px,\s*4vw,\s*44px\)/s);
+    expect(css).toMatch(/\.post-header, \.post-grid\s*\{[^}]*width:\s*min\(1080px,\s*calc\(100% - 48px\)\)/s);
+    expect(css).toMatch(/\.reading-card\s*\{[^}]*padding:\s*clamp\(20px,\s*3vw,\s*36px\)/s);
     expect(css).toMatch(/\.prose\s*\{[^}]*line-height:\s*1\.72/s);
     expect(css).toMatch(/\.prose h2\s*\{[^}]*margin:\s*1\.45em 0 \.5em/s);
     expect(css).toMatch(/\.prose h3\s*\{[^}]*margin:\s*1\.3em 0 \.45em/s);
@@ -44,5 +45,24 @@ describe('compact article typography', () => {
     expect(css).toMatch(/\.toc li\.nested\s*\{[^}]*padding-left:\s*10px/s);
     expect(css).toMatch(/\.toc a\s*\{[^}]*min-height:\s*30px[^}]*line-height:\s*1\.3/s);
     expect(mobileCss).toMatch(/\.toc-mobile a\s*\{[^}]*min-height:\s*44px/s);
+  });
+});
+
+describe('article utility styling', () => {
+  it('removes the header underline-like shadow on every viewport', () => {
+    expect(css).toMatch(/\.nav-shell\s*\{[^}]*box-shadow:\s*none/s);
+    expect(mobileCss).toMatch(/\.nav-shell\s*\{[^}]*box-shadow:\s*none/s);
+  });
+
+  it('renders source tabs at two spaces in code blocks', () => {
+    expect(css).toMatch(/\.prose pre\s*\{[^}]*tab-size:\s*2/s);
+  });
+
+  it('styles accessible image zoom and back-to-top controls', () => {
+    expect(css).toMatch(/\.prose img\s*\{[^}]*cursor:\s*zoom-in/s);
+    expect(css).toMatch(/\.image-lightbox\s*\{[^}]*max-height:\s*calc\(100dvh - 32px\)/s);
+    expect(css).toMatch(/\.back-to-top\s*\{[^}]*position:\s*fixed[^}]*min-width:\s*52px[^}]*min-height:\s*52px/s);
+    expect(css).toMatch(/\.back-to-top span\s*\{[^}]*font-weight:\s*1000[^}]*text-stroke:\s*\.5px currentColor/s);
+    expect(css).toMatch(/\.back-to-top\[data-visible\]\s*\{[^}]*opacity:\s*1/s);
   });
 });

@@ -1,0 +1,41 @@
+<dialog class="image-lightbox" aria-label="图片预览">
+  <button class="image-lightbox-close" type="button">关闭</button>
+  <img data-lightbox-image src="" alt="" />
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.image-lightbox');
+  const preview = dialog?.querySelector<HTMLImageElement>('[data-lightbox-image]');
+  const closeButton = dialog?.querySelector<HTMLButtonElement>('.image-lightbox-close');
+  let activeImage: HTMLImageElement | null = null;
+
+  const openImage = (image: HTMLImageElement) => {
+    if (!dialog || !preview) return;
+    activeImage = image;
+    preview.src = image.currentSrc || image.src;
+    preview.alt = image.alt || '文章图片';
+    dialog.showModal();
+  };
+
+  document.querySelectorAll<HTMLImageElement>('.prose img').forEach((image) => {
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-haspopup', 'dialog');
+    image.setAttribute('aria-label', image.alt ? `放大图片：${image.alt}` : '放大文章图片');
+    image.addEventListener('click', () => openImage(image));
+    image.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openImage(image);
+    });
+  });
+
+  closeButton?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog?.addEventListener('close', () => {
+    activeImage?.focus();
+    activeImage = null;
+  });
+</script>

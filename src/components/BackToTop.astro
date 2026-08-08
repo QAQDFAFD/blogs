@@ -1,0 +1,18 @@
+<button class="back-to-top" type="button" aria-label="返回页面顶部"><span aria-hidden="true">↑</span></button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.back-to-top');
+  const header = document.querySelector<HTMLElement>('.site-header');
+
+  if (button && header) {
+    const observer = new IntersectionObserver(([entry]) => {
+      button.toggleAttribute('data-visible', !entry.isIntersecting);
+    });
+
+    observer.observe(header);
+    button.addEventListener('click', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
+</script>

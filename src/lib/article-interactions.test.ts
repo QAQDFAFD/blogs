@@ -1,0 +1,35 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+
+const baseLayout = readFileSync(new URL('../layouts/BaseLayout.astro', import.meta.url), 'utf8');
+const postLayout = readFileSync(new URL('../layouts/PostLayout.astro', import.meta.url), 'utf8');
+const backToTopUrl = new URL('../components/BackToTop.astro', import.meta.url);
+const imageLightboxUrl = new URL('../components/ImageLightbox.astro', import.meta.url);
+
+describe('article utilities', () => {
+  it('mounts a site-wide back-to-top control without a scroll listener', () => {
+    expect(baseLayout).toContain("import BackToTop from '../components/BackToTop.astro'");
+    expect(baseLayout).toContain('<BackToTop />');
+    expect(existsSync(backToTopUrl)).toBe(true);
+
+    const component = existsSync(backToTopUrl) ? readFileSync(backToTopUrl, 'utf8') : '';
+    expect(component).toContain('<span aria-hidden="true">↑</span>');
+    expect(component).toContain('IntersectionObserver');
+    expect(component).toContain('window.scrollTo');
+    expect(component).not.toContain("addEventListener('scroll'");
+  });
+
+  it('enhances article images with an accessible native dialog', () => {
+    expect(postLayout).toContain("import ImageLightbox from '../components/ImageLightbox.astro'");
+    expect(postLayout).toContain('<ImageLightbox />');
+    expect(existsSync(imageLightboxUrl)).toBe(true);
+
+    const component = existsSync(imageLightboxUrl) ? readFileSync(imageLightboxUrl, 'utf8') : '';
+    expect(component).toContain('<dialog');
+    expect(component).toContain("document.querySelectorAll<HTMLImageElement>('.prose img')");
+    expect(component).toContain("image.setAttribute('role', 'button')");
+    expect(component).toContain("image.addEventListener('keydown'");
+    expect(component).toContain('dialog.showModal()');
+    expect(component).toContain('activeImage?.focus()');
+  });
+});
