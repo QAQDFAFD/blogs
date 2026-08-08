@@ -43,6 +43,13 @@ describe('compact article typography', () => {
     expect(css).not.toContain('.prose table { display: block; width: 100%;');
   });
 
+  it('renders a clearly visible horizontal scrollbar for wide tables', () => {
+    expect(css).toMatch(/\.prose table\s*\{[^}]*scrollbar-color:\s*var\(--green\) var\(--soft\)[^}]*scrollbar-gutter:\s*stable/s);
+    expect(css).toMatch(/\.prose table::\-webkit-scrollbar\s*\{[^}]*height:\s*14px/s);
+    expect(css).toMatch(/\.prose table::\-webkit-scrollbar-track\s*\{[^}]*background:\s*var\(--soft\)/s);
+    expect(css).toMatch(/\.prose table::\-webkit-scrollbar-thumb\s*\{[^}]*border:\s*3px solid var\(--soft\)[^}]*background:\s*var\(--green\)/s);
+  });
+
   it('compacts the desktop table of contents but preserves mobile targets', () => {
     expect(css).toMatch(/\.toc-desktop\s*\{[^}]*padding:\s*16px/s);
     expect(css).toMatch(/\.toc ol\s*\{[^}]*margin:\s*8px 0 0/s);
