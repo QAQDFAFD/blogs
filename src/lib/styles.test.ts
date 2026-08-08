@@ -43,11 +43,11 @@ describe('compact article typography', () => {
     expect(css).not.toContain('.prose table { display: block; width: 100%;');
   });
 
-  it('renders a clearly visible horizontal scrollbar for wide tables', () => {
-    expect(css).toMatch(/\.prose table\s*\{[^}]*scrollbar-color:\s*var\(--green\) var\(--soft\)[^}]*scrollbar-gutter:\s*stable/s);
-    expect(css).toMatch(/\.prose table::\-webkit-scrollbar\s*\{[^}]*height:\s*14px/s);
-    expect(css).toMatch(/\.prose table::\-webkit-scrollbar-track\s*\{[^}]*background:\s*var\(--soft\)/s);
-    expect(css).toMatch(/\.prose table::\-webkit-scrollbar-thumb\s*\{[^}]*border:\s*3px solid var\(--soft\)[^}]*background:\s*var\(--green\)/s);
+  it('renders an always-visible custom scrollbar for overflowing tables', () => {
+    expect(css).toMatch(/\.prose table\[data-custom-scrollbar\]\s*\{[^}]*scrollbar-width:\s*none/s);
+    expect(css).toMatch(/\.table-scrollbar\s*\{[^}]*height:\s*14px[^}]*background:\s*var\(--soft\)/s);
+    expect(css).toMatch(/\.table-scrollbar-thumb\s*\{[^}]*min-width:\s*44px[^}]*background:\s*var\(--green\)/s);
+    expect(css).toContain('.table-scrollbar[hidden] { display: none; }');
   });
 
   it('compacts the desktop table of contents but preserves mobile targets', () => {

@@ -199,11 +199,14 @@ a, button, summary { cursor: pointer; -webkit-tap-highlight-color: transparent; 
 .prose a { color: var(--green-dark); font-weight: 800; }
 .prose img { width: 100%; height: auto; margin: 1.4rem 0; border: 3px solid var(--border); border-radius: var(--radius-card); box-shadow: 5px 5px 0 var(--border); cursor: zoom-in; }
 .prose pre { overflow-x: auto; margin: 1.4rem 0; padding: 19px; border: 3px solid var(--border); border-radius: var(--radius-control); background: var(--code-bg) !important; color: var(--code-text); font-size: .86rem; line-height: 1.65; tab-size: 2; }
-.prose table { display: block; width: max-content; max-width: 100%; overflow-x: auto; scrollbar-color: var(--green) var(--soft); scrollbar-gutter: stable; margin: 1.4rem 0; border-spacing: 0; border: 3px solid var(--border); border-radius: var(--radius-control); }
-.prose table::-webkit-scrollbar { height: 14px; }
-.prose table::-webkit-scrollbar-track { background: var(--soft); border-top: 2px solid var(--border); }
-.prose table::-webkit-scrollbar-thumb { min-width: 44px; border: 3px solid var(--soft); border-radius: 999px; background: var(--green); background-clip: padding-box; }
-.prose table::-webkit-scrollbar-thumb:hover { background: var(--green-dark); background-clip: padding-box; }
+.prose table { display: block; width: max-content; max-width: 100%; overflow-x: auto; margin: 1.4rem 0; border-spacing: 0; border: 3px solid var(--border); border-radius: var(--radius-control); }
+.prose table[data-custom-scrollbar] { margin-bottom: 0; scrollbar-width: none; }
+.prose table[data-custom-scrollbar]::-webkit-scrollbar { display: none; }
+.table-scrollbar { position: relative; height: 14px; margin: 8px 0 1.4rem; border: 2px solid var(--border); border-radius: 999px; background: var(--soft); cursor: pointer; touch-action: none; }
+.table-scrollbar[hidden] { display: none; }
+.table-scrollbar-thumb { position: absolute; left: 2px; top: 2px; height: 6px; min-width: 44px; border-radius: 999px; background: var(--green); cursor: grab; }
+.table-scrollbar-thumb:hover { background: var(--green-dark); }
+.table-scrollbar-thumb:active { cursor: grabbing; }
 .prose th, .prose td { min-width: 120px; padding: 10px 12px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: left; }
 .prose th { background: var(--blue); color: var(--accent-text); }
 .prose :not(pre) > code { padding: .18em .38em; border-radius: 6px; background: var(--inline-code-bg); color: var(--inline-code-text); font-size: .9em; }
