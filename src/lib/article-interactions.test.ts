@@ -13,7 +13,8 @@ describe('article utilities', () => {
     expect(existsSync(backToTopUrl)).toBe(true);
 
     const component = existsSync(backToTopUrl) ? readFileSync(backToTopUrl, 'utf8') : '';
-    expect(component).toContain('<span aria-hidden="true">↑</span>');
+    expect(component).toContain("@tabler/icons/outline/arrow-bar-to-up.svg?raw");
+    expect(component).toContain('set:html={arrowBarToUpIcon}');
     expect(component).toContain('IntersectionObserver');
     expect(component).toContain('button.tabIndex = visible ? 0 : -1');
     expect(component).toContain("button.setAttribute('aria-hidden', String(!visible))");

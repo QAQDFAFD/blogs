@@ -1,4 +1,9 @@
-<button class="back-to-top" type="button" aria-label="返回页面顶部" aria-hidden="true" tabindex="-1"><span aria-hidden="true">↑</span></button>
+---
+import arrowBarToUpIcon from '@tabler/icons/outline/arrow-bar-to-up.svg?raw';
+---
+<button class="back-to-top" type="button" aria-label="返回页面顶部" aria-hidden="true" tabindex="-1">
+  <span aria-hidden="true" set:html={arrowBarToUpIcon} />
+</button>
 
 <script>
   const button = document.querySelector<HTMLButtonElement>('.back-to-top');

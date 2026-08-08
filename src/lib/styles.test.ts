@@ -67,7 +67,7 @@ describe('article utility styling', () => {
     expect(css).toMatch(/\.prose img\s*\{[^}]*cursor:\s*zoom-in/s);
     expect(css).toMatch(/\.image-lightbox\s*\{[^}]*max-height:\s*calc\(100dvh - 32px\)/s);
     expect(css).toMatch(/\.back-to-top\s*\{[^}]*position:\s*fixed[^}]*min-width:\s*52px[^}]*min-height:\s*52px/s);
-    expect(css).toMatch(/\.back-to-top span\s*\{[^}]*font-size:\s*1\.5rem[^}]*font-weight:\s*1000[^}]*text-stroke:\s*1px currentColor/s);
+    expect(css).toMatch(/\.back-to-top svg\s*\{[^}]*width:\s*24px[^}]*height:\s*24px[^}]*stroke-width:\s*2\.5/s);
     expect(css).toMatch(/\.back-to-top\s*\{[^}]*visibility:\s*hidden/s);
     expect(css).toMatch(/\.back-to-top\[data-visible\]\s*\{[^}]*visibility:\s*visible[^}]*opacity:\s*1/s);
   });
