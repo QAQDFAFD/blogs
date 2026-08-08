@@ -15,6 +15,9 @@ describe('article utilities', () => {
     const component = existsSync(backToTopUrl) ? readFileSync(backToTopUrl, 'utf8') : '';
     expect(component).toContain('<span aria-hidden="true">↑</span>');
     expect(component).toContain('IntersectionObserver');
+    expect(component).toContain('button.tabIndex = visible ? 0 : -1');
+    expect(component).toContain("button.setAttribute('aria-hidden', String(!visible))");
+    expect(component).toContain('button.blur()');
     expect(component).toContain('window.scrollTo');
     expect(component).not.toContain("addEventListener('scroll'");
   });
@@ -30,6 +33,7 @@ describe('article utilities', () => {
     expect(component).toContain("image.setAttribute('role', 'button')");
     expect(component).toContain("image.addEventListener('keydown'");
     expect(component).toContain('dialog.showModal()');
+    expect(component).toContain('const outsideDialog =');
     expect(component).toContain('activeImage?.focus()');
   });
 });

@@ -1,6 +1,6 @@
 <dialog class="image-lightbox" aria-label="图片预览">
   <button class="image-lightbox-close" type="button">关闭</button>
-  <img data-lightbox-image src="" alt="" />
+  <img data-lightbox-image alt="" />
 </dialog>
 
 <script>
@@ -32,7 +32,9 @@
 
   closeButton?.addEventListener('click', () => dialog?.close());
   dialog?.addEventListener('click', (event) => {
-    if (event.target === dialog) dialog.close();
+    const bounds = dialog.getBoundingClientRect();
+    const outsideDialog = event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
+    if (outsideDialog) dialog.close();
   });
   dialog?.addEventListener('close', () => {
     activeImage?.focus();
