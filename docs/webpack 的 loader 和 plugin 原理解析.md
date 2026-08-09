@@ -1,13 +1,4 @@
----
-title: webpack 的 loader 和 plugin 原理解析
-description: 从模块转换到编译钩子，理解 webpack 的 loader 与 plugin 机制。
-pubDate: 2025-12-24
-category: 前端工程
-tags: [webpack, 构建工具]
-cover: /images/editorial-workspace.webp
-coverAlt: 黑白色调的开发者工作台
-draft: false
----
+# webpack 的 loader 和 plugin 原理解析
 
 ## 1.为什么需要 loader
 
@@ -141,7 +132,7 @@ module.exports = function (content, map, meta) {
 
 #### raw loader
 
-Raw loader 适用于图片、字体等二进制资源；开启方式是设置 module.exports.raw = true，此时传入的 content 为 Buffer。
+Raw loader 适用于图片、字体等二进制资源；开启方式是设置 module.exports.raw = true，此时传入的 content 为 Buffer。 
 
 ```js
 const mime = require('mime-types');
@@ -334,3 +325,4 @@ module.exports = AssetsListPlugin;
 ## 4.总结
 
 ![image-20251225231454992](https://ljj-image.top/2026/08/85370299296169a60ed5eace4af46125.png)
+
