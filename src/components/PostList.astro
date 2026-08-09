@@ -1,7 +1,7 @@
 ---
 import type { Post } from '../lib/content';
-import PostCard from './PostCard.astro';
 import { withBase } from '../lib/urls';
+import PostCard from './PostCard.astro';
 interface Props { posts: Post[]; }
 const { posts } = Astro.props;
 ---
@@ -10,7 +10,7 @@ const { posts } = Astro.props;
 ) : (
   <section class="empty-state">
     <h2>还没有发布文章</h2>
-    <p>可以先了解作者，或订阅 RSS 等待更新。</p>
-    <p><a href={withBase('/about/')}>关于 JiaJun Li</a>　<a href={withBase('/rss.xml')}>RSS</a></p>
+    <p>可以订阅 RSS 等待更新。</p>
+    <p><a href={withBase('/rss.xml')}>RSS</a></p>
   </section>
 )}
